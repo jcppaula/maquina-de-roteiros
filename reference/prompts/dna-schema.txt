@@ -1,0 +1,60 @@
+
+Responda SOMENTE com um JSON válido (sem texto antes ou depois, sem markdown fences):
+
+{
+  "nicho_identificado": string,
+  "roteiros_analisados": integer,
+  "tom_dominante": string,
+  "estilo_escrita": {
+    "pessoa_narrativa": string,
+    "nivel_formalidade": string,
+    "construcao_frases": string,
+    "densidade_informacao": string,
+    "recursos_recorrentes": [string]
+  },
+  "linguagem": {
+    "registro": string,
+    "nivel_vocabulario": string,
+    "expressoes_e_marcadores": [string],
+    "relacao_com_espectador": string
+  },
+  "padrao_abertura": {
+    "saudacao": boolean,
+    "velocidade_frases_iniciais": string,
+    "elemento_choque": string,
+    "misterio_plantado": string,
+    "templates_abertura_preenchiveis": [string]
+  },
+  "tecnicas_retencao": [string],
+  "vocabulario_caracteristico": [string],
+  "ritmo_paragrafo": {
+    "comprimento_medio": string,
+    "frases_impacto_solo": string,
+    "pontuacao_dramatica": string,
+    "padrao_ritmo_frases": string
+  },
+  "marcadores_transicao": [string],
+  "estrutura_bloco_narrativo": string,
+  "estrutura_roteiro": [
+    {
+      "etapa": string,
+      "faixa_percentual_aproximada": string,
+      "funcao_narrativa": string,
+      "mecanismos_retencao": [string]
+    }
+  ],
+  "padrao_fechamento": string,
+  "extensao_tipica": {
+    "faixa_palavras": string,
+    "media_estimada": integer
+  },
+  "anti_padroes": [string],
+  "assinatura_narrativa": string,
+  "fact_checking_profile": {
+    "categorias_afirmacao": [string],
+    "padrao_ancora": string,
+    "proibicoes_especificas_do_nicho": [string],
+    "fontes_autoridade_aceitas": [string]
+  },
+  "anti_padroes_inautenticos_detectados": [string]
+}

@@ -1,0 +1,48 @@
+
+
+PERSONAGENS — BASE VERIFICADA (não é lista fechada):
+O Architect já pesquisou e confirmou os personagens em "personagens_verificados" — use esses
+exatamente como vieram (nome, profissão, detalhe verificado), sem alterar o fato registrado.
+Além deles, você PODE nomear personagens adicionais livremente para cumprir a regra
+"NOMEAÇÃO OBRIGATÓRIA" e a distribuição ao longo do corpo — este caminho não verifica esses
+nomes adicionais por busca (não há Fact Shield nem Auditor depois), então garanta que soem
+plausíveis e coerentes com o evento, mas não é preciso restringir-se à lista do Architect.
+
+PROIBIDO em eventos com vítimas/mortos reais (desastres, incêndios, acidentes, tragédias): não
+apresente um personagem ADICIONAL (fora de "personagens_verificados") como mais uma vítima,
+morto ou sobrevivente NOMEADO do evento real, com biografia, parente nomeado ou citação de
+familiar enlutado — mesmo que o nome pareça "genérico" pra você. Em eventos reais documentados
+com lista conhecida de vítimas, qualquer nome completo plausível tem chance real de ser uma
+pessoa que de fato morreu, e a família dela pode ver o vídeo com uma cena e uma citação que você
+inventou sobre a morte dela. Já aconteceu: um roteiro sobre o incêndio de Yarnell Hill (19
+bombeiros mortos, nomeados) inventou "Robert Caldwell" e "Dustin Deford" como bombeiros
+adicionais — com mãe e namorada nomeadas e citações fabricadas — quando esses eram, na
+verdade, nomes de DUAS DAS VÍTIMAS REAIS do incêndio que o Architect não tinha verificado; da
+mesma forma, um roteiro sobre o Ash Wednesday inventou um personagem "Ray Ashton" e depois
+atribuiu a ele, por engano, a história de sobrevivência de outro personagem real da mesma lista.
+Nesses eventos, personagens adicionais devem ficar SEM sobrenome pareado a papel de
+vítima/morto (ex: "outro bombeiro da equipe", "um parente de uma das vítimas") ou receber nome
+só quando claramente vivos e sem papel de vítima fatal (testemunha, autoridade, cientista citado
+por seu trabalho etc.). Em eventos SEM lista de vítimas reais conhecida (ex: peça histórica sem
+mortes, ou personagens de apoio vivos), o risco é menor e a liberdade de nomear continua valendo.
+
+NOME CITADO SÓ EM FONTE/RODAPÉ (fora de "personagens_verificados") CONTA COMO NÃO VERIFICADO:
+se um nome aparece em "fontes"/citações gerais do Architect mas NÃO tem uma entrada própria em
+"personagens_verificados" (com status "real_confirmado"/"substituto_real"/"papel_coletivo_sem_nome"),
+trate esse nome exatamente como um personagem adicional que você mesmo inventou — vale todo o
+limite acima. Já aconteceu: um roteiro citou "Ellen Morrow" e a "família Fletcher" que apareciam
+só como referência solta numa fonte ("caso do eco-lodge de Ellen Morrow"), sem detalhe nenhum, e
+o Writer inventou biografia completa em cima disso — segundo emprego, vinha de bookkeeping,
+plantou vinhedo numa encosta — nada disso estava na fonte. Uma linha de citação com nome e nada
+mais NÃO é uma verificação de personagem; é só uma referência bibliográfica.
+LIMITE CRÍTICO nos personagens "real_confirmado"/"substituto_real" (os personagens ADICIONAIS
+que você inventa não têm esse limite, já que são fictícios por natureza — o limite é só para
+quem tem nome real verificado): se "detalhe_verificado" disser algo como "not detailed",
+"limited details available", "circumstances not confirmed", "unclear"/"unknown", só o fato bruto
+descrito ali é real — é PROIBIDO inventar como/onde/quando/por que algo aconteceu com essa
+pessoa, decisão pessoal, diálogo, ou último gesto, mesmo que pareça só "textura dramática".
+Exemplo real do que NÃO fazer: detalhe_verificado dizia só "married couple who died together...
+circumstances not detailed", e mesmo assim saiu "When the evacuation order came, they chose to
+stay... 'We've survived worse'... They had died holding each other" — cada detalhe aí é
+inventado sobre pessoas reais mortas, isso é fabricação de biografia, não textura. O certo era
+citar nome e morte confirmada e parar por aí, sem cena.

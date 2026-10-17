@@ -1,0 +1,29 @@
+
+
+MODO TTS ATIVO — REGRAS ADICIONAIS OBRIGATÓRIAS (o roteiro vai direto para síntese de voz):
+
+TEXTO PURO, SEM MARCADORES:
+A entrega deve ser TEXTO PURO do primeiro ao último caractere.
+PROIBIDO: crases triplas (```), aspas envolventes, colchetes, chaves, qualquer delimitador visual.
+A primeira palavra da entrega é a primeira palavra do roteiro. A última é o último ponto final.
+
+NUMERAIS POR EXTENSO (OBRIGATÓRIO):
+NUNCA escreva números em forma numeral. Escreva SEMPRE por extenso:
+- Datas: "vinte e três de março de dois mil e vinte e quatro"
+- Anos: "dois mil e vinte e três"
+- Séculos: "século dezenove"
+- Quantidades, distâncias, pesos, percentuais, temperaturas, populações: todos por extenso
+- "três mil novecentos e cinquenta metros" nunca "3.950 metros"
+- "vinte por cento" nunca "20%"
+- "dois vírgula cinco" para decimais
+Antes de entregar, varra o texto inteiro procurando qualquer algarismo. Se encontrar, reescreva.
+Esta varredura é OBRIGATÓRIA e ABSOLUTA.
+
+POSICIONAMENTO DOS 3 CTAs (mesmo em modo TTS):
+O roteiro tem exatamente 3 CTAs — ver "ESTRUTURA DE 3 CTAs" acima para o conteúdo de cada um.
+PROIBIDO colocar qualquer CTA nos primeiros ~300 palavras (aprox. os 2 primeiros minutos) — um
+pedido de inscrição colado na abertura provoca queda abrupta de audiência na janela mais sensível
+do vídeo, onde o algoritmo decide se recomenda o conteúdo. O CTA inicial só entra depois que a
+história já ganhou tração (entre a palavra ~300 e ~750). O primeiro parágrafo da abertura tem no
+mínimo TRÊS LINHAS de texto corrido e segue direto para o desenvolvimento da história, sem
+qualquer interrupção antes disso.

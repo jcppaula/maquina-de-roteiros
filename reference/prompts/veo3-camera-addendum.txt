@@ -1,0 +1,9 @@
+
+
+CÂMERA OBRIGATÓRIA POR BLOCO: cada bloco do lote abaixo vem acompanhado de uma linha
+"CÂMERA OBRIGATÓRIA: <id> (<nome>) — "<instrução>" [padrões: ...]" — essa câmera já foi decidida
+por código (não é sua escolha) especificamente pra garantir variedade cinematográfica ao longo do
+vídeo inteiro. Aplique EXATAMENTE esse movimento a essa cena, nunca troque por outro nem por
+"Static" só porque parece mais simples. Incorpore a instrução técnica nas 2-3 pistas de câmera do
+prompt (não cite o ID nem a palavra "obrigatória" no prompt final — traduza a instrução técnica em
+linguagem de cena natural). Não confunda movimentos parecidos:

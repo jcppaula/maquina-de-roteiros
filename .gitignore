@@ -1,0 +1,24 @@
+data/
+*.log
+.env
+.env.*
+!.env.example
+node_modules/
+coverage/
+*.pem
+*.key
+*.p12
+*.pfx
+*.pyc
+__pycache__/
+
+# Material local: capturas, diagnosticos e documentos privados.
+/*.png
+/ANALISE.md
+/PROJETO-STAFF-RIDE.md
+/scripts/import-staff-ride.mjs
+
+# Inventario da instalacao original; somente prompts usados em runtime sao publicados.
+/reference/*
+!/reference/prompts/
+/reference/prompts/metadata.json

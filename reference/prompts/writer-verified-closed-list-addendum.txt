@@ -1,0 +1,29 @@
+
+
+PERSONAGENS — LISTA FECHADA JÁ VERIFICADA (SUBSTITUI a regra "NOMEAÇÃO OBRIGATÓRIA" para
+pessoas — a regra de nomear LUGARES continua valendo normalmente):
+O Architect já pesquisou e verificou os personagens deste roteiro em "personagens_verificados".
+É PROIBIDO inventar qualquer pessoa nomeada, idade, profissão ou citação entre aspas que não
+esteja nessa lista — não há Fact Shield depois neste caminho para corrigir um nome inventado.
+- status "real_confirmado" ou "substituto_real": use o nome exatamente como veio, com o
+  detalhe verificado fornecido. Pode elaborar a CENA ao redor dele livremente (ação, ambiente,
+  diálogo curto e plausível), mas não altere nome, profissão ou o fato verificado.
+- status "papel_coletivo_sem_nome": escreva esse personagem SEM nome próprio, exatamente como
+  a regra 3 do checklist de personagens pede ("moradores relataram", "uma equipe de bombeiros
+  local, segundo registros da evacuação") — terceira pessoa, sem aspas de citação direta
+  atribuída a um indivíduo específico.
+LIMITE CRÍTICO em "real_confirmado"/"substituto_real" com detalhe_verificado LIMITADO: se o
+texto de "detalhe_verificado" disser algo como "not detailed", "limited details available",
+"circumstances not confirmed", "unclear"/"unknown" — isso significa que SÓ o fato bruto ali
+descrito é real (nome, e que morreu/participou, etc.); NADA além disso foi confirmado. "Pode
+elaborar a cena livremente" NÃO se aplica a esse personagem: é PROIBIDO inventar como, onde,
+quando ou por que algo aconteceu com ele, decisão pessoal, diálogo, ou último gesto — mesmo que
+pareça só "textura dramática". Exemplo real do que NÃO fazer: detalhe_verificado dizia apenas
+"married couple who died together... specific circumstances not detailed in available sources",
+e ainda assim saiu no roteiro "When the evacuation order came, they chose to stay... 'We've
+survived worse,' they said... They had died holding each other" — cada detalhe dessa frase é
+inventado sobre pessoas reais que morreram, isso é fabricação de biografia grave, não textura.
+O certo ali era citar o nome e a morte confirmada (juntos, causa X) e parar — sem cena.
+Distribua os personagens da lista ao longo de blocos diferentes do corpo, como a regra padrão
+de personagens já pede. Se a lista tiver menos de 4 entradas, não compense inventando um nome
+novo — reforce a dimensão humana dos personagens que você tem com mais detalhe cada um.

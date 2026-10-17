@@ -1,0 +1,106 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import http from 'node:http';
+import {spawn} from 'node:child_process';
+import {mkdtemp,readFile} from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import {setTimeout as sleep} from 'node:timers/promises';
+
+test('Local web API stores channels, runs generation, protects settings and rejects cross-origin writes',async(t)=>{
+ let failWriter=true,planCalls=0;const projectPrompts=[];
+ const mock=http.createServer(async(req,res)=>{let content='';for await(const chunk of req)content+=chunk;const request=content?JSON.parse(content):{};let response='# Roteiro de teste\n\nTexto gerado pelo provedor de teste.';
+ if(request.prompt?.includes('RESUME_TEST')){
+   if(request.prompt.includes('Você é o arquiteto narrativo'))planCalls++;
+   if(request.prompt.includes('Você é o escritor (Writer)')&&failWriter){failWriter=false;res.writeHead(500);res.end('falha simulada');return;}
+ }
+ if(request.prompt?.includes('TÍTULO EXATO: PROJECT_TEST'))projectPrompts.push(request.prompt);
+ if(request.prompt?.includes('Você configura um fluxo editorial'))response=JSON.stringify({summary:'Configuração proposta pelo teste',requirements:[{path:'planejamento.md',label:'Planejamento',required:true,kind:'file'}],workflow:JSON.parse(request.prompt.split('FLUXO EXISTENTE:\n')[1].split('\nARQUIVOS:')[0]),tools:[],warnings:['Proposta simulada']});
+ if(request.prompt?.includes('FORMATO OBRIGATÓRIO DA RESPOSTA'))response='1 | A wide view of the ocean.\n2 | A wave reaches the shore.';
+ if(request.prompt?.includes('Crie capítulos para este SRT'))response='0:00 Abertura\n0:20 Onda';
+ if(request.prompt?.includes('SLOW_TEST'))await sleep(1000);
+ res.setHeader('Content-Type','application/json');res.end(JSON.stringify(req.url==='/api/tags'?{models:[{name:'test-model'}]}:{response}));});
+ await new Promise(resolve=>mock.listen(0,'127.0.0.1',resolve));t.after(()=>mock.close());
+ const probe=http.createServer();await new Promise(resolve=>probe.listen(0,'127.0.0.1',resolve));const port=probe.address().port;await new Promise(resolve=>probe.close(resolve));
+ const data=await mkdtemp(path.join(os.tmpdir(),'roteiros-api-'));
+ const child=spawn(process.execPath,['server.mjs'],{cwd:path.resolve(import.meta.dirname,'..'),env:{...process.env,PORT:String(port),ROTEIROS_DATA_DIR:data},stdio:'pipe',windowsHide:true});
+ t.after(()=>child.kill());let output='';child.stderr.on('data',x=>output+=x);const base=`http://127.0.0.1:${port}`;
+ let ready=false;for(let i=0;i<80;i++){try{if((await fetch(base+'/api/health')).ok){ready=true;break;}}catch{}await sleep(100);}assert.ok(ready,output);
+ const api=async(route,method='GET',input)=>{const res=await fetch(base+route,{method,headers:{'Content-Type':'application/json'},body:input?JSON.stringify(input):undefined});return {status:res.status,data:await res.json()};};
+ const created=await api('/api/channels','POST',{name:'Canal teste',dna:'Narrativa clara'});assert.equal(created.status,201);
+ await api('/api/settings','POST',{providers:{ollama:{baseUrl:`http://127.0.0.1:${mock.address().port}`,model:'test-model'},openai:{apiKey:'TEST-SECRET'}}});
+ const state=await api('/api/state');assert.ok(state.data.settings.providers.openai.configured);assert.ok(!JSON.stringify(state.data).includes('TEST-SECRET'));
+ const cross=await fetch(base+'/api/channels',{method:'POST',headers:{Origin:'https://example.org','Content-Type':'application/json'},body:JSON.stringify({name:'bad'})});assert.equal(cross.status,403);
+ const invalid=await api('/api/jobs','POST',{type:'veo',provider:'ollama',script:'Texto',srt:'inválido'});assert.equal(invalid.status,400);
+ const queued=await api('/api/jobs','POST',{type:'script',provider:'ollama',topic:'O oceano',channelId:created.data.id});assert.equal(queued.status,202);
+ let job;for(let i=0;i<60;i++){job=(await api('/api/jobs/'+queued.data.id)).data;if(['completed','failed'].includes(job.status))break;await sleep(100);}assert.equal(job.status,'completed',job.error);assert.match(job.result,/Roteiro de teste/);
+ const after=(await api('/api/state')).data;assert.equal(after.scripts.length,1);assert.equal(after.scripts[0].channelId,created.data.id);
+ const backup=(await api('/api/export')).data;assert.equal(backup.scripts.length,1);assert.ok(!JSON.stringify(backup).includes('TEST-SECRET'));
+ const imported=await api('/api/import','POST',backup);assert.equal(imported.status,200);assert.equal((await api('/api/state')).data.scripts.length,1);
+ const providerTest=await api('/api/providers/ollama/test','POST',{});assert.equal(providerTest.data.ok,true);
+ const unchangedTest=await api('/api/providers/ollama/test','POST',{model:'test-model',effort:''});assert.equal(unchangedTest.data.saved,true);
+ const draftFailure=await api('/api/providers/ollama/test','POST',{baseUrl:'http://127.0.0.1:1'});assert.equal(draftFailure.status,200);assert.equal(draftFailure.data.ok,false);assert.equal(draftFailure.data.saved,false);
+ assert.ok(!Object.hasOwn((await api('/api/state')).data.settings.providers,'ollama'));
+ assert.deepEqual((await api('/api/providers/ollama/models')).data,['test-model'],'O teste de rascunho não deve alterar a configuração salva usada pelos adaptadores legados');
+ const draftModels=await api('/api/providers/ollama/models','POST',{baseUrl:`http://127.0.0.1:${mock.address().port}`});assert.equal(draftModels.status,200);assert.deepEqual(draftModels.data,['test-model']);
+ const statusResult=await api('/api/providers/status');assert.equal(statusResult.status,200);assert.ok(!Object.hasOwn(statusResult.data,'ollama'));assert.ok(!JSON.stringify(statusResult.data).includes('TEST-SECRET'));
+ const originalName=created.data.name;
+ assert.equal((await api('/api/channels/'+created.data.id,'PUT',{name:'',niche:'Não salvar'})).status,400);
+ assert.equal((await api('/api/state')).data.channels[0].name,originalName);
+ const veo=await api('/api/jobs','POST',{type:'veo',provider:'ollama',script:'O oceano e as ondas.',srt:'1\n00:00:00,000 --> 00:00:20,000\nO oceano.\n\n2\n00:00:20,000 --> 00:00:40,000\nUma onda.',chapters:true});
+ let visual;for(let i=0;i<60;i++){visual=(await api('/api/jobs/'+veo.data.id)).data;if(['completed','failed'].includes(visual.status))break;await sleep(50);}
+ assert.equal(visual.status,'completed',visual.error);assert.match(visual.result,/1 \| A wide view/);assert.equal(visual.scenes.length,2);assert.match(visual.chapters,/0:00/);
+ const slow=await api('/api/jobs','POST',{type:'script',provider:'ollama',topic:'SLOW_TEST',pipeline:'direct'});
+ await sleep(50);const cancelled=await api('/api/jobs/'+slow.data.id+'/cancel','POST',{});assert.equal(cancelled.data.status,'cancelled');
+ await sleep(100);assert.equal((await api('/api/jobs/'+slow.data.id)).data.status,'cancelled');assert.equal((await api('/api/state')).data.scripts.length,1);
+ const resumable=await api('/api/jobs','POST',{type:'script',provider:'ollama',topic:'RESUME_TEST',pipeline:'two'});
+ let failed;for(let i=0;i<60;i++){failed=(await api('/api/jobs/'+resumable.data.id)).data;if(failed.status==='failed')break;await sleep(50);}assert.equal(failed.status,'failed');assert.ok(failed.plan);assert.equal(failed.resumable,true);
+ assert.equal((await api('/api/jobs/'+failed.id+'/resume','POST',{})).status,202);
+ let resumed;for(let i=0;i<60;i++){resumed=(await api('/api/jobs/'+failed.id)).data;if(['completed','failed'].includes(resumed.status))break;await sleep(50);}assert.equal(resumed.status,'completed',resumed.error);assert.equal(planCalls,1,'Retomada não deve repetir o planejamento pago');
+ assert.equal((await api('/api/settings','POST',{advanced:{concurrency:2},providers:{deepseek:{apiKey:'DEEP-SECRET'},agy:{model:'test-agy'}}})).status,200);
+ assert.equal((await api('/api/state')).data.settings.advanced.concurrency,2);assert.ok(!JSON.stringify((await api('/api/state')).data).includes('DEEP-SECRET'));
+ const complete=(await api('/api/export?kind=all')).data;assert.equal(complete.jobs.length,4);assert.ok(!JSON.stringify(complete).includes('DEEP-SECRET'));assert.equal((await api('/api/import','POST',complete)).data.jobs,0);
+ const importedJob={...complete.jobs.find(j=>j.status==='completed'),id:'restored-job',status:'running'};
+ const importedResult=await api('/api/import','POST',{jobs:[importedJob]});assert.equal(importedResult.status,200);assert.equal(importedResult.data.jobs,1);assert.equal((await api('/api/jobs/restored-job')).data.status,'interrupted');
+ const projectChannel=(await api('/api/channels','POST',{name:'Canal com projeto',language:'English (US)'})).data;
+ const projectFiles=[{path:'Instruções do Projeto.txt',content:'Instruções editoriais'},{path:'skills/writer/SKILL.md',content:'Leia references/voice.md e siga as etapas.'},{path:'skills/writer/references/voice.md',content:'OLD_PROJECT_VOICE'}];
+ const uploaded=await api('/api/projects/'+projectChannel.id+'/files','POST',{files:projectFiles});assert.equal(uploaded.status,200);assert.equal(uploaded.data.files.length,3);
+ const isolatedChannel=(await api('/api/channels','POST',{name:'Outro projeto'})).data;
+ await api('/api/projects/'+isolatedChannel.id+'/files','POST',{files:[{path:'SKILL.md',content:'OTHER_CHANNEL_PRIVATE'}]});
+ const projectJob=(await api('/api/jobs','POST',{type:'script',provider:'ollama',topic:'PROJECT_TEST',channelId:projectChannel.id,pipeline:'project'})).data;
+ let paused;for(let i=0;i<80;i++){paused=(await api('/api/jobs/'+projectJob.id)).data;if(paused.status==='awaiting_review')break;await sleep(30);}assert.equal(paused.status,'awaiting_review',paused.error);assert.equal(projectPrompts.length,1);
+ await api('/api/projects/'+projectChannel.id+'/files','POST',{files:[{path:'skills/writer/references/voice.md',content:'NEW_PROJECT_VOICE'}]});
+ assert.equal((await api('/api/jobs/'+paused.id+'/approve','POST',{stageId:'plan',sha256:'wrong'})).status,409);
+ assert.equal((await api('/api/jobs/'+paused.id+'/approve','POST',paused.awaitingReview)).status,202);
+ let projectDone;for(let i=0;i<80;i++){projectDone=(await api('/api/jobs/'+paused.id)).data;if(['completed','failed'].includes(projectDone.status))break;await sleep(30);}assert.equal(projectDone.status,'completed',projectDone.error);assert.equal(projectPrompts.length,4);assert.ok(projectPrompts.every(p=>p.includes('OLD_PROJECT_VOICE')&&!p.includes('NEW_PROJECT_VOICE')&&!p.includes('OTHER_CHANNEL_PRIVATE')));
+ const projectState=(await api('/api/state')).data.channels.find(c=>c.id===projectChannel.id);assert.equal(projectState.project.revision,2);assert.ok(projectState.project.files.every(f=>!Object.hasOwn(f,'content')));
+ const exportProject=(await api('/api/export?kind=all')).data;assert.ok(exportProject.channels.find(c=>c.id===projectChannel.id).project.files.some(f=>f.content==='NEW_PROJECT_VOICE'));
+ // Final approval commits register, archive, database and readable filesystem export.
+ const configuredProject=(await api('/api/projects/'+projectChannel.id)).data;
+ await api('/api/projects/'+projectChannel.id,'PUT',{archiveHistory:true,workflow:configuredProject.workflow.map(s=>({...s,...(['writing','review'].includes(s.id)?{engine:{provider:'ollama',model:s.id+'-test'}}:{})}))});
+ const finalJob=(await api('/api/jobs','POST',{type:'script',provider:'ollama',topic:'FINALIZATION_TEST',videoNumber:'02',postingDate:'2026-10-18',channelId:projectChannel.id,pipeline:'project'})).data;
+ const waitReview=async()=>{let value;for(let i=0;i<80;i++){value=(await api('/api/jobs/'+finalJob.id)).data;if(['awaiting_review','completed','failed','needs_input'].includes(value.status))break;await sleep(30);}return value;};
+ let final=await waitReview();assert.equal(final.awaitingReview.stageId,'plan');
+ await api('/api/jobs/'+final.id+'/approve','POST',final.awaitingReview);
+ final=await waitReview();assert.equal(final.status,'awaiting_review',final.error);assert.ok(final.awaitingReview.finalizationHash);assert.match(final.finalizationPreview.registryRow,/02 \| FINALIZATION_TEST/);
+ assert.ok(!(await api('/api/state')).data.scripts.some(s=>s.title==='FINALIZATION_TEST'));
+ assert.equal((await api('/api/jobs/'+final.id+'/approve','POST',{stageId:final.awaitingReview.stageId,sha256:final.awaitingReview.sha256})).status,409);
+ // An edit while the review is open requires a fresh finalization approval.
+ await api('/api/projects/'+projectChannel.id+'/files','POST',{files:[{path:'registro-de-producao.md',content:'# Registro\n\n| Nº | Título | Roteiro pronto | Caracteres | Observações |\n|---|---|---|---|---|\n| 02 | Título antigo | | | Nota preservada. |\n'}]});
+ await api('/api/jobs/'+final.id+'/approve','POST',final.awaitingReview);final=await waitReview();assert.equal(final.status,'awaiting_review');assert.match(final.finalizationPreview.registryRow,/Nota preservada/);
+ await api('/api/jobs/'+final.id+'/approve','POST',final.awaitingReview);
+ for(let i=0;i<80;i++){final=(await api('/api/jobs/'+final.id)).data;if(['completed','failed'].includes(final.status))break;await sleep(30);}
+ assert.equal(final.status,'completed',final.error);assert.equal(final.registryUpdated.action,'updated');assert.ok(final.productionFolder.startsWith(data));
+ assert.equal(final.engineCalls.find(c=>c.stageId==='writing').model,'writing-test');assert.equal(final.engineCalls.find(c=>c.stageId==='review').model,'review-test');
+ assert.match(await readFile(path.join(final.productionFolder,'narracao.txt'),'utf8'),/Texto gerado/);
+ assert.match(await readFile(path.join(final.productionFolder,'etapas','03-verificacao.md'),'utf8'),/Roteiro de teste/);
+ const savedProject=(await api('/api/projects/'+projectChannel.id)).data;
+ assert.ok(savedProject.files.some(f=>f.path===final.historyPath));assert.equal(savedProject.files.find(f=>f.path==='registro-de-producao.md').content.split('\n').filter(l=>l.startsWith('| 02 |')).length,1);
+ assert.equal((await api('/api/state')).data.scripts.filter(s=>s.jobId===final.id).length,1);
+ assert.equal((await api('/api/jobs/'+final.id+'/approve','POST',final.awaitingReview||{})).status,409);
+ const beforeAnalysis=(await api('/api/projects/'+projectChannel.id)).data;
+ const proposal=await api('/api/projects/'+projectChannel.id+'/analyze','POST',{engine:{provider:'ollama',model:'test-model'},expectedRevision:beforeAnalysis.revision});assert.equal(proposal.status,200);assert.equal(proposal.data.summary,'Configuração proposta pelo teste');
+ assert.equal((await api('/api/projects/'+projectChannel.id)).data.revision,beforeAnalysis.revision,'Análise não aplica a proposta automaticamente');
+ const applied=await api('/api/projects/'+projectChannel.id,'PUT',{workflow:proposal.data.workflow,requirements:proposal.data.requirements,assistantEngine:proposal.data.engine,expectedRevision:beforeAnalysis.revision});assert.equal(applied.status,200);assert.equal(applied.data.assistantEngine.provider,'ollama');assert.equal(applied.data.workflow.find(s=>s.id==='writing').engine.model,'writing-test');
+ assert.equal((await api('/api/projects/'+projectChannel.id)).data.setup.requirements.find(r=>r.path==='planejamento.md').status,'missing');
+});

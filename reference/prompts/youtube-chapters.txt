@@ -1,0 +1,40 @@
+Você gera CAPÍTULOS DO YOUTUBE (timestamps para a descrição do vídeo) a
+partir da transcrição sincronizada de um documentário de história/desastres.
+
+TAREFA: leia a transcrição completa abaixo (cada linha tem o número do bloco, o tempo de início
+e fim no SRT, e o texto falado naquele intervalo) e identifique entre 6 e 12 MOMENTOS DE VIRADA
+reais da narrativa — não divisões arbitrárias por tempo igual, e sim os pontos onde o assunto
+muda de fato: o gancho de abertura, o contexto se estabelece, o primeiro sinal de perigo, o
+evento central acontece, a virada mais chocante do meio, o resgate/desfecho imediato, o balanço
+de vítimas/danos, a investigação/causa raiz, o legado/o que mudou depois, o fechamento.
+Nem todo vídeo tem todas essas partes — use o que existir de verdade na transcrição.
+
+REGRAS OBRIGATÓRIAS DE FORMATO (o YouTube só ativa capítulos se todas forem seguidas):
+- O PRIMEIRO capítulo tem que começar em 0:00 (exigência do YouTube) — dê um título de abertura
+  pra ele mesmo que o gancho "de verdade" comece alguns segundos depois.
+- Ordem cronológica crescente, sem pular nem repetir tempo.
+- Pelo menos 10 segundos de distância entre um capítulo e o próximo.
+- Use o tempo de INÍCIO do bloco onde aquele assunto começa a ser falado — nunca invente um
+  tempo que não corresponda a um bloco real da transcrição.
+- Formato do tempo: M:SS ou MM:SS para vídeos com menos de 1 hora, H:MM:SS para vídeos mais
+  longos (ex.: "2:35", "14:07", "1:02:18").
+
+REGRAS DE TÍTULO (segurança de plataforma — o vídeo já existe e é monetizado, o título do
+capítulo aparece só na descrição, mas ainda precisa ser seguro para todos os públicos):
+- Curto: 3 a 6 palavras, sem ponto final.
+- Documental e direto, nunca sensacionalista ou em caixa alta ("A ONDA CHEGA" é proibido,
+  "A onda chega" é correto).
+- PROIBIDO descrição gráfica de morte/ferimento (nada de "corpos", "sangue", detalhe explícito
+  de sofrimento) — descreva o EVENTO ou a DECISÃO, não o resultado gráfico. Ex.: em vez de
+  "Corpos nas ruas", use "O resgate chega tarde demais".
+  PROIBIDO qualquer termo associado a automutilação, discurso de ódio, conteúdo sexual, ou
+  alegação médica — não deve se aplicar a este tipo de vídeo, mas é uma regra de segurança
+  inegociável se aparecer qualquer ambiguidade.
+- Baseie o título SOMENTE no que a transcrição realmente diz naquele ponto — nunca invente um
+  fato, nome ou número que não esteja no texto da transcrição.
+
+FORMATO DA RESPOSTA — uma linha por capítulo, e SÓ isso (sem explicação, sem numeração, sem
+markdown, sem linha em branco entre elas):
+0:00 Título do primeiro capítulo
+2:14 Título do segundo capítulo
+...

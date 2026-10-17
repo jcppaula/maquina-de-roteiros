@@ -1,0 +1,118 @@
+
+
+IDIOMA — REGRA ABSOLUTA: o prompt final de cada bloco é SEMPRE em INGLÊS, mesmo que estas
+instruções estejam em português e mesmo que o SRT de origem esteja em outro idioma. Só o rótulo
+"Negative:" e o texto que vem depois dele também são em inglês. NUNCA escreva nenhuma palavra em
+português no prompt final — nem rótulos como "Pistas de luz/textura" ou "Proporção", nem termos
+soltos. Se você perceber que começou a escrever em português, pare e reescreva a linha em inglês.
+
+SEGURANÇA DE CONTEÚDO — REGRA INEGOCIÁVEL (Veo3/YouTube — nunca pode ser violada, mesmo que o
+texto do bloco narre exatamente isso): PROIBIDO que a cena retrate, mesmo de forma sugestiva ou
+parcial: nudez ou conteúdo sexual; sangue explícito, mutilação, ferimento grave detalhado ou
+crueldade animal; o MOMENTO em que uma pessoa morre ou sofre dano físico (ex.: alguém preso e
+queimando dentro de um carro ou de uma casa em chamas, sendo atingido, se afogando); qualquer
+CRIANÇA em perigo, ferida, morta ou em risco físico visível, em NENHUMA hipótese, mesmo anônima e
+mesmo que o SRT descreva isso; uso ou fabricação de drogas; arma de fogo ou branca em contexto de
+agressão/crime; incentivo a automutilação ou suicídio (nunca o ato nem o método); ódio,
+discriminação ou humilhação de um grupo ou pessoa; rosto de qualquer pessoa real e identificável
+(pública ou vítima) — vale pra QUALQUER pessoa real citada no roteiro, não só as que têm ficha.
+
+COMO RESOLVER (substituição, nunca proibição isolada nem pular o bloco): quando o texto do bloco
+narrar algo da lista acima, troque O QUE é mostrado, preservando local/época/contexto reais.
+Exemplos: "pessoa morre presa no carro em chamas" → mostre o carro por fora, danificado pelo fogo,
+sem chama ativa e sem ninguém visível dentro (o depois, não o momento); "família morre dentro de
+casa incendiada" → mostre a estrutura da casa (fachada, fumaça, o que restou), nunca alguém preso
+lá dentro; "criança ferida ou morta" → NUNCA mostre a criança nessa condição — substitua por um
+objeto associado (brinquedo, mochila escolar, sala de aula vazia, playground vazio) ou por adultos
+respondendo à distância, sem detalhar o que houve com ela; ferimento/sangue → aftermath limpo, foco
+no ambiente, nunca o ferimento em si; arma/crime → mostre o contexto ou a consequência, nunca o ato.
+
+SOBRE O NEGATIVE PROMPT DE SEGURANÇA: NUNCA escreva palavras-gatilho de segurança no negative
+prompt da cena (ex.: "no blood", "no gore", "no nudity", "no dead child", "no weapon") — citar a
+palavra, mesmo negando, pode fazer o modelo de vídeo focar justamente nela e gerar o oposto do
+pretendido. A prevenção é 100% na cena POSITIVA, nunca descrevendo o elemento perigoso — o negative
+prompt de cada bloco continua sendo só sobre ESTILO (luz, textura, anacronismo, etc.), nunca sobre
+segurança de conteúdo.
+
+ÁUDIO — SEM FALAS (regra obrigatória): o roteiro já tem narração própria, gravada por fora — o
+vídeo gerado NUNCA pode ter fala, diálogo, narração, palavra cantada ou qualquer vocalização
+compreensível, em NENHUM idioma. É permitido apenas som ambiente/efeitos sonoros coerentes com a
+cena (vento, fogo crepitando, sirene distante, passos, motor, multidão indistinta sem palavras
+audíveis). Todo prompt deve terminar com uma instrução curta de áudio nesse sentido (ver FORMATO
+DO PROMPT abaixo).
+
+REGRA DE OURO (nunca quebrar): sincronização > consistência visual > clareza visual >
+criatividade. Um prompt sincronizado e consistente mas menos "criativo" é sempre melhor que um
+prompt bonito que quebra a consistência do personagem ou do estilo.
+
+FIDELIDADE AO TEXTO DO BLOCO (regra crítica — é a causa mais comum de prompt ruim): o prompt
+precisa descrever uma cena FÍSICA, CONCRETA E LITERAL que ilustra exatamente o que aquele bloco
+específico do SRT está narrando — nunca uma representação abstrata, alegórica ou "simbólica e não
+literal" de um número, estatística ou conceito. Errado: tratar "173 pessoas" como "a crowd-like
+expanse... as a symbolic figure, not literal" — isso não é uma cena, é uma ideia. Certo: mostrar
+UM lugar, UM momento, UMA ação concretos que pertencem ao mundo real da história (mesmo que
+representem algo maior implicitamente). Nunca ofereça mais de uma opção pro mesmo detalhe (ex.:
+"perhaps a kettle, a garden tool, or a fence" é proibido) — escolha UM objeto/ação específicos e
+descreva só ele. Quando o bloco citar um lugar (cidade, estado, região, rua), descreva o tipo de
+ambiente que reforça REALISTICAMENTE aquele lugar e época (ex.: para um estado/região, use a
+paisagem/arquitetura típica local já definida na ficha de estilo — nunca invente um marco
+genérico não relacionado, como um horizonte de cidade europeia, um castelo ou skyline famoso, só
+porque o nome do lugar "soa" a isso).
+
+CONSISTÊNCIA DE PERSONAGENS ENTRE BLOCOS (regra crítica): a ficha de personagens recorrentes só
+se aplica ao bloco onde aquela pessoa REALMENTE está, segundo o texto do bloco — nunca insira um
+personagem nomeado da ficha num bloco cujo texto não o menciona nem sugere claramente sua
+presença, mesmo que pareça uma boa forma de manter continuidade visual. Duas pessoas nomeadas
+diferentes da ficha só podem aparecer juntas na mesma cena se o texto DESTE bloco específico as
+coloca juntas — nunca combine duas pessoas de histórias/trechos diferentes na mesma imagem só
+porque as duas têm ficha. Blocos sem nenhuma pessoa nomeada no texto (narração, estatística,
+contexto histórico, cenário) devem ser ilustrados sem personagens nomeados — use pessoas anônimas
+genéricas, objetos ou ambiente, nunca "empreste" o rosto/nome de alguém da ficha por conveniência.
+
+CONTINUIDADE ENTRE LOTES: se você receber uma seção "ÚLTIMOS PROMPTS JÁ GERADOS", ela mostra como o
+lote anterior terminou de verdade — use isso para que o primeiro bloco deste lote continue aquela
+mesma linha visual, nunca pareça um recomeço. Se você receber uma seção "O QUE VEM A SEGUIR", ela é
+só uma prévia do próximo lote (ainda não gerado) — use apenas para saber o rumo da história, NUNCA
+gere prompt para esses blocos futuros nem antecipe elementos deles antes da hora.
+
+MODO_SRT: original — regra absoluta: 1 bloco do SRT recebido = 1 prompt gerado. Nunca funda dois
+blocos num prompt só, nunca divida um bloco em dois prompts, nunca pule um bloco, nunca invente
+um bloco extra. Se o bloco tiver várias ideias/ações, resolva com SÍNTESE COMPOSTA: uma única
+cena CONCRETA (não abstrata) com pistas visuais (gesto, expressão, objeto, ambiente) que sugerem
+o conjunto, nunca tente mostrar cada ação separadamente nem use termos sequenciais.
+
+ASSET_MODE: image_only — todo prompt é para uma imagem estática (que depois recebe pan/zoom/
+parallax no sincronizador, fora deste processo). PROIBIDO usar termos que sugerem sequência de
+ações ou vídeo: "then", "after that", "next", "transitioning into", "starts by", "ends with" (ou
+equivalentes em português: "depois", "em seguida", "termina com"). Use sempre: cena única,
+coerente e concreta, síntese visual através de pistas físicas reais — nunca composição abstrata
+ou puramente simbólica.
+
+FORMATO DO PROMPT (comprimido/fluido — decisão do projeto, não use blocos rotulados como
+"STYLE_LOCK:" ou "CHARACTER_LOCK:" dentro do prompt):
+Cada prompt (o texto completo da linha: cena + negative + áudio) tem entre 80 e 100 PALAVRAS —
+faixa fixa, não aproximada, e vale IGUALMENTE para o bloco 1 e para o bloco 25 do lote. Erro comum
+a evitar: encurtar os prompts conforme o lote avança para "economizar" espaço de resposta — isso é
+PROIBIDO. Se sentir que está perto do limite de tokens da resposta, corte DETALHE (um adjetivo a
+menos, uma pista de câmera a menos), nunca corte um bloco inteiro nem entregue um prompt muito
+abaixo de 80 palavras. Todos os 25 (ou N) prompts do lote devem ter comprimento parecido entre si.
+A estrutura, na ordem: sujeito/gênero fotográfico → local/época/cena específicos → ação ou
+composição visual → 2-3 pistas de luz/textura/câmera mais relevantes PARA ESSA CENA ESPECÍFICA (não
+repita o negative prompt base inteiro, nem toda a ficha de estilo — aplique-a implicitamente) →
+proporção (16:9). Se a cena tiver um personagem recorrente da ficha, inclua a linha da ficha dele
+quase verbatim (pode ajustar levemente a gramática pra encaixar na frase, mas não mude idade/traço/
+roupa). Depois do parágrafo de cena, na MESMA linha, adicione um negative prompt curto específico
+dessa cena (5-10 itens de ESTILO — nunca palavra-gatilho de segurança, ver regra acima). Por fim,
+ainda na MESMA linha, adicione uma instrução curta de áudio (ex.: "Audio: ambient environmental
+sound only, no dialogue, no speech, no audible words, no singing.") — varie o som ambiente conforme
+a cena, mas a proibição de fala é sempre a mesma.
+
+
+FORMATO DE SAÍDA DESTE LOTE (obrigatório, para validação automática):
+Uma linha por bloco, começando pelo número EXATO do bloco recebido, seguido de " | " e o prompt
+completo (cena + negative prompt + áudio) nessa mesma linha. Nunca pule número, nunca repita
+número, nunca mude a ordem, nunca deixe uma linha vazia, nunca escreva comentário fora das linhas
+numeradas, nunca use markdown. Exemplo de uma linha (conteúdo ilustrativo):
+17 | Wide documentary shot of a firefighter in standard-issue turnout gear seen from behind, silhouetted against smoke-filled orange sky, dry grass and scorched pines in the foreground, handheld-steady camera at eye level, warm amber haze, subtle film grain, 16:9. Negative: no visible face, no modern logos, no text overlay, no watermark, no cartoon look, no oversaturated colors. Audio: ambient wind and distant fire crackling only, no dialogue, no speech, no audible words, no singing.
+
+Responda SOMENTE com essas linhas — uma por bloco recebido, nessa ordem, nada antes ou depois.
